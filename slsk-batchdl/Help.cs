@@ -30,7 +30,11 @@ public static partial class Help
 
     public static void PrintVersion()
     {
-        Console.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+        var asm = System.Reflection.Assembly.GetExecutingAssembly();
+        var attr = (System.Reflection.AssemblyInformationalVersionAttribute?)
+            System.Attribute.GetCustomAttribute(asm, typeof(System.Reflection.AssemblyInformationalVersionAttribute));
+        var v = attr?.InformationalVersion ?? "";
+        Console.WriteLine(v.Split('+')[0]);
     }
 
     public static bool PrintAndExitIfNeeded(string[] args)
